@@ -52,18 +52,49 @@ scene.add(lightHelper, gridHelper)
 const controls = new OrbitControls(camera, renderer.domElement)
 
 //Agregar elementos random a la escena
-function addStar(){
-    const geometry= new THREE.SphereGeometry(0.25,24,24);
-    const material= new THREE.MeshStandardMaterial({color:0xffffff});
-    const star= new THREE.Mesh(geometry,material);
+function addStar() {
+    const geometry = new THREE.SphereGeometry(0.25, 24, 24);
+    const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+    const star = new THREE.Mesh(geometry, material);
 
 
-    const [x,y,z]= Array(3).fill().map(()=> THREE.MathUtils.randFloatSpread(100));
-    star.position.set(x,y,z);
+    const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));
+    star.position.set(x, y, z);
     scene.add(star)
 }
 //Agrego 200 estrellas al fondo
 Array(200).fill().forEach(addStar)
+
+//Background
+
+const spaceTexture= new THREE.TextureLoader().load('galaxy.jpg')
+scene.background= spaceTexture;
+
+
+
+//Convertir objetos en 2D en imagenes tridimencionales 
+//Cubo con mi foto
+const alanTexture= new THREE.TextureLoader().load('alan.png');
+const alan =new THREE.Mesh(
+    new THREE.BoxGeometry(3,3,3),
+    new THREE.MeshBasicMaterial({map:alanTexture})
+);
+//scene.add(alan)
+
+
+//Moon
+
+const moonTexture= new THREE.TextureLoader().load('moon2.jpg')
+//Esta linea se encarga de darle la ilusion de profundidad a la textura de la luna
+const normalTexture= new THREE.TextureLoader().load('normal.jpg')
+const moon= new THREE.Mesh(
+    new THREE.SphereGeometry(3,32,32),
+    new THREE.MeshStandardMaterial({
+        map: moonTexture,
+        normalMap: normalTexture,
+    })
+)
+scene.add(moon)
 
 
 function animate() {
